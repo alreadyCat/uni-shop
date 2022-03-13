@@ -1,5 +1,9 @@
 <template>
 	<view>
+		<view class="sticky">
+			<my-search @click="gotoSearch"></my-search>
+		</view>
+		
 		<!-- 轮播图 -->
 		<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" circular='true'>
 			<swiper-item v-for="(item,index) in swiperList" :key="index">
@@ -89,12 +93,22 @@
 						url: '/pages/cate/cate'
 					})
 				}
+			},
+			gotoSearch(){
+				uni.navigateTo({
+					url:'/subpkg/search/search'
+				})
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
+	.sticky{
+		position: sticky;
+		top: 0;
+		z-index: 999;
+	}
 	swiper {
 		height: 330rpx;
 

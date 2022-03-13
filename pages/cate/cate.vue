@@ -1,5 +1,8 @@
 <template>
 	<view>
+		<view class="sticky">
+			<my-search :borderRadius='18' @click='gotoSearch'></my-search>
+		</view>
 		<view class="scoll-container-view">
 			<!-- 左侧滑动区域 -->
 			<scroll-view class="left-scroll" scroll-y="true" :style="{height: windowHeight + 'px'}">
@@ -39,13 +42,12 @@
 		},
 		onLoad(){
 			const sysInfo = uni.getSystemInfoSync()
-			this.windowHeight = sysInfo.windowHeight
+			this.windowHeight = sysInfo.windowHeight - 50
 			this.getCateList()
 		},
 		methods:{
 			async getCateList(){
 				const {data} = await uni.$http.get('/api/public/v1/categories')
-				console.log(data)
 				if(data.meta.status !== 200)return uni.$showMsg()
 				this.cateList = data.message
 				this.active = this.cateList[0].cat_id
@@ -60,12 +62,22 @@
 				uni.navigateTo({
 					url:'/subpkg/goods_list/goods_list?cid=' + item.cat_id
 				})
+			},
+			gotoSearch(){
+				uni.navigateTo({
+					url:'/subpkg/search/search'
+				})
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
+.sticky{
+	position: sticky;
+	top: 0;
+	z-index: 999;
+}
 .scoll-container-view{
 	display: flex;
 	.left-scroll{
