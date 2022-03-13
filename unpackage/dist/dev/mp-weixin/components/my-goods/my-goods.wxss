@@ -1,0 +1,31 @@
+@charset "UTF-8";
+/* 水平间距 */
+/* 水平间距 */
+.goods-item {
+  display: flex;
+  padding: 5px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.goods-item .left-img {
+  width: 100px;
+  height: 100px;
+  margin-right: 5px;
+}
+.goods-item .left-img image {
+  width: 100px;
+  height: 100px;
+  display: block;
+}
+.goods-item .right-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.goods-item .right-content .desc {
+  font-size: 13px;
+}
+.goods-item .right-content .price {
+  color: #c00000;
+  font-size: 16px;
+}
+
