@@ -27,42 +27,45 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				windowHeight:0,
-				cateList:[],
-				active:0,
-				cateLevel2:[],
-				scrollTop:0
-			};
+
+import tabbarBadge from '@/mixins/tabbar-badge.js'
+export default {
+	mixins:[tabbarBadge],
+	data() {
+		return {
+			windowHeight:0,
+			cateList:[],
+			active:0,
+			cateLevel2:[],
+			scrollTop:0
+		};
+	},
+	onLoad(){
+		const sysInfo = uni.getSystemInfoSync()
+		this.windowHeight = sysInfo.windowHeight
+		this.getCateList()
+	},
+	methods:{
+		async getCateList(){
+			const {data} = await uni.$http.get('/api/public/v1/categories')
+			console.log(data)
+			if(data.meta.status !== 200)return uni.$showMsg()
+			this.cateList = data.message
+			this.active = this.cateList[0].cat_id
+			this.cateLevel2 = data.message[0].children
 		},
-		onLoad(){
-			const sysInfo = uni.getSystemInfoSync()
-			this.windowHeight = sysInfo.windowHeight
-			this.getCateList()
+		changeCate(item){
+			this.active = item.cat_id
+			this.cateLevel2 = item.children
+			this.scrollTop = this.scrollTop===0?1:0
 		},
-		methods:{
-			async getCateList(){
-				const {data} = await uni.$http.get('/api/public/v1/categories')
-				console.log(data)
-				if(data.meta.status !== 200)return uni.$showMsg()
-				this.cateList = data.message
-				this.active = this.cateList[0].cat_id
-				this.cateLevel2 = data.message[0].children
-			},
-			changeCate(item){
-				this.active = item.cat_id
-				this.cateLevel2 = item.children
-				this.scrollTop = this.scrollTop===0?1:0
-			},
-			gotoGoodsList(item){
-				uni.navigateTo({
-					url:'/subpkg/goods_list/goods_list?cid=' + item.cat_id
-				})
-			}
+		gotoGoodsList(item){
+			uni.navigateTo({
+				url:'/subpkg/goods_list/goods_list?cid=' + item.cat_id
+			})
 		}
 	}
+}
 </script>
 
 <style lang="scss">

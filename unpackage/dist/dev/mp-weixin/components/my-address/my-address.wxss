@@ -1,0 +1,42 @@
+@charset "UTF-8";
+/* 水平间距 */
+/* 水平间距 */
+.address-choose-box {
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.address-box {
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 5px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+.address-box .person {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.address-box .person .telephone {
+  display: flex;
+  align-items: center;
+}
+.address-box .address {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bottom-image {
+  width: 100%;
+  height: 5px;
+}
+.bottom-image image {
+  width: 100%;
+  height: 5px;
+  display: block;
+}
+

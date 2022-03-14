@@ -1,0 +1,1 @@
+<view class="settle-container"><view><label class="radio"><radio checked="{{isAllchecked}}" color="#C00000" data-event-opts="{{[['tap',[['changeAllChecked',['$event']]]]]}}" bindtap="__e"></radio><text>全选</text></label></view><view class="total">合计：<text class="price">{{"￥"+TotalPrice}}</text></view><view class="settle">{{'结算('+total+')'}}</view></view>

@@ -41,57 +41,59 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				swiperList: [],
-				navList: [],
-				floorList: []
-			};
+import tabbarBadge from '@/mixins/tabbar-badge.js'
+export default {
+	mixins:[tabbarBadge],
+	data() {
+		return {
+			swiperList: [],
+			navList: [],
+			floorList: []
+		};
+	},
+	onLoad() {
+		this.getSwiperList()
+		this.getNavList()
+		this.getFloorList()
+	},
+	methods: {
+		async getSwiperList() {
+			const {
+				data
+			} = await uni.$http.get('/api/public/v1/home/swiperdata')
+			if (data.meta.status !== 200) {
+				return uni.$showMsg()
+			}
+			this.swiperList = data.message
 		},
-		onLoad() {
-			this.getSwiperList()
-			this.getNavList()
-			this.getFloorList()
+		async getNavList() {
+			const {
+				data
+			} = await uni.$http.get('/api/public/v1/home/catitems')
+			if (data.meta.status !== 200) return uni.$showMsg()
+			this.navList = data.message
 		},
-		methods: {
-			async getSwiperList() {
-				const {
-					data
-				} = await uni.$http.get('/api/public/v1/home/swiperdata')
-				if (data.meta.status !== 200) {
-					return uni.$showMsg()
-				}
-				this.swiperList = data.message
-			},
-			async getNavList() {
-				const {
-					data
-				} = await uni.$http.get('/api/public/v1/home/catitems')
-				if (data.meta.status !== 200) return uni.$showMsg()
-				this.navList = data.message
-			},
-			async getFloorList() {
-				const {
-					data
-				} = await uni.$http.get('/api/public/v1/home/floordata')
-				if (data.meta.status !== 200) return uni.$showMsg()
-				data.message.forEach(item=>{
-					item.product_list.forEach(n=>{
-						n.url = '/subpkg/goods_list/goods_list?' + n.navigator_url.split('?')[1]
-					})
+		async getFloorList() {
+			const {
+				data
+			} = await uni.$http.get('/api/public/v1/home/floordata')
+			if (data.meta.status !== 200) return uni.$showMsg()
+			data.message.forEach(item=>{
+				item.product_list.forEach(n=>{
+					n.url = '/subpkg/goods_list/goods_list?' + n.navigator_url.split('?')[1]
 				})
-				this.floorList = data.message
-			},
-			navClickHandler(item) {
-				if (item.name === '分类') {
-					uni.switchTab({
-						url: '/pages/cate/cate'
-					})
-				}
+			})
+			this.floorList = data.message
+		},
+		navClickHandler(item) {
+			if (item.name === '分类') {
+				uni.switchTab({
+					url: '/pages/cate/cate'
+				})
 			}
 		}
 	}
+}
 </script>
 
 <style lang="scss">

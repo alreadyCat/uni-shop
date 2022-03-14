@@ -25,7 +25,22 @@
 </template>
 
 <script>
+	import {mapState,mapGetters} from 'vuex'
+	
 	export default {
+		computed:{
+			...mapState('cart',['cart']),
+			...mapGetters('cart',['total'])
+		},
+		watch:{
+			total:{
+				handler(newVal){
+					const options = this.options.find(x=>x.text==='购物车')
+					options.info = newVal
+				},
+				immediate:true
+			}
+		},
 		data() {
 			return {
 				goodsInfo:{},
@@ -36,7 +51,7 @@
 						}, {
 							icon: 'cart',
 							text: '购物车',
-							info: 2
+							info: 0 
 						}],
 					    buttonGroup: [{
 					      text: '加入购物车',
@@ -58,7 +73,6 @@
 		methods:{
 			async getGoodsInfo(id){
 				const {data} = await uni.$http.get('/api/public/v1/goods/detail',{goods_id:id})
-				console.log(data)
 				if(data.meta.status !== 200)return uni.$showMsg()
 				
 				data.message.goods_introduce.replace(/<img /g,"<img style='display:block;' ").replace(/.webp/g,'.jpg')
@@ -77,6 +91,24 @@
 						url:'/pages/cart/cart'
 					})
 				}
+			},
+			buttonClick(e){
+				console.log(e)
+				if(e.content.text === '加入购物车'){
+					const {goods_id,goods_name,goods_price,goods_small_logo} = this.goodsInfo
+					const goods = {
+						goods_id,
+						goods_name,
+						goods_price,
+						goods_small_logo,
+						goods_count:1,
+						goods_state:true
+					}
+					this.$store.commit('cart/addtoCart',goods)
+					uni.$showMsg('加入购物车成功，快去看看吧！')
+					
+				}
+				
 			}
 		}
 	}
