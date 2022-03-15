@@ -53,7 +53,6 @@
 				this.$store.commit('cart/editSingleGoods',goods)
 			},
 			delHandler(goods){
-				console.log(goods)
 				this.$store.commit('cart/deltoCart',goods.goods_id)
 			}
 		}
